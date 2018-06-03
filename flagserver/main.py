@@ -1,9 +1,13 @@
-#!/usr/bin/python
-# -*- encoding: utf-8 -*-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# author: 36huo
+
+
 from bottle import route, run, template, request, static_file
 import sqlite3
 import time
 import json
+import subprocess
 
 # please modyfi value of secret_key 
 secret_key='secret'
@@ -50,13 +54,12 @@ def insert_flag(remoteip,flag):
     con.commit()
     return remoteip,flag
 
-
+# 自定义row构造器，返回字典对象，可以通过列名索引
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
     return d
-
 
 
 con = sqlite3.connect("db.db")
@@ -88,7 +91,6 @@ def flag():
     remoteip=request.get('REMOTE_ADDR')
     flag=request.POST.get('flag')
     ip=request.POST.get('ip')
-    print(ip)
     if not(ip is None):
         remoteip=ip
     return 'success %s %s' % insert_flag(remoteip,flag)
@@ -115,8 +117,6 @@ def showflagjson():
         flags.append(row)
     jsondata={"flags":flags}
     return json.dumps(flags)
-
-
 
 
 run(host='0.0.0.0', port=62088, threaded=True)
