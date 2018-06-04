@@ -128,7 +128,7 @@ class flag_auto_submit_class(object):
                 self.con.execute("UPDATE flag_submit set submitted=submitted+1,submit_time=?,comments=? where id=?",param)
                 self.con.commit()
                 # logger.info(str(flag['id'])+","+flag['ip']+","+flag['flag']+","+output)
-                logger.info("%i,%s,%s,%s % (flag['id'],flag['ip'],flag['flag'],output)
+                logger.info("%i,%s,%s,%s" % (flag['id'],flag['ip'],flag['flag'],output)
                 time.sleep(self.sleep_time+0.5)
             time.sleep(self.sleep_time+0.5)
 
