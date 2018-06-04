@@ -10,6 +10,8 @@ import json
 import subprocess
 import os
 
+BASE_PATH = os.path.abspath(os.path.dirname(__file__))
+
 # please modyfi value of secret_key 
 secret_key='secret'
 
@@ -63,7 +65,7 @@ def dict_factory(cursor, row):
     return d
 
 
-con = sqlite3.connect("db.db")
+con = sqlite3.connect(os.path.join(BASE_PATH, "db.db"))
 con.row_factory = dict_factory
 try:
     creat_db()
@@ -119,6 +121,6 @@ def showflagjson():
     jsondata={"flags":flags}
     return json.dumps(flags)
 
-subprocess.Popen(os.environ['_'] + ' /mybin/AWD_toolkit/flagserver/flag_auto_submit.py',shell=True)
+subprocess.Popen(os.environ['_'] + ' '+os.path.join(BASE_PATH, "flag_auto_submit.py"),shell=True)
 
 run(host='0.0.0.0', port=62088, threaded=True)

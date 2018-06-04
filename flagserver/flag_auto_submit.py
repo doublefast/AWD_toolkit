@@ -14,8 +14,10 @@ import sqlite3
 import time
 import sys
 import getopt
-
 import logging  
+import os
+
+BASE_PATH = os.path.abspath(os.path.dirname(__file__))
   
 # 创建一个logger  
 logger = logging.getLogger('mylogger')  
@@ -62,11 +64,12 @@ class flag_auto_submit_class(object):
 
     def getflags(self):
         c = self.con.cursor()
-        cursor = c.execute("select id,ip,flag from flag_submit where submitted=0")
+        cursor = c.execute("select id,ip,flag from flag_submit where submitted<=2 order by submitted ")
         rows = cursor.fetchall()
         return rows
 
     def creat_payload(self,payload_file,flag,ip):
+        payload_file = os.path.join(BASE_PATH, payload_file)
         with open(payload_file,'r') as f:
             payload=f.read()
 
@@ -119,12 +122,10 @@ class flag_auto_submit_class(object):
                     output=subprocess.check_output(self.creat_payload(self.flag_submit_request_file,flag['flag'],flag['ip']),shell=True)
                 except:
                     continue
-
                 #print(flag['id'],flag['ip'],flag['flag'],output)
-
                 # 如果wget命令执行成功，则将数据库里该条记录设置为已提交
-                param=[1,int(time.time()),output,flag['id']]
-                self.con.execute("UPDATE flag_submit set submitted=?,submit_time=?,comments=? where id=?",param)
+                param=[int(time.time()),output,flag['id']]
+                self.con.execute("UPDATE flag_submit set submitted=submitted+1,submit_time=?,comments=? where id=?",param)
                 self.con.commit()
                 logger.info(str(flag['id'])+","+flag['ip']+","+flag['flag']+","+output)  
                 time.sleep(self.sleep_time+0.5)
