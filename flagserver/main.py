@@ -73,7 +73,7 @@ except:
     pass
 
 
-static_path='./static'
+static_path=os.path.join(BASE_PATH, './static')
 @route('/%s/static/<filename:re:.*\.json|.*\.html|.*\.htm|.*\.js|.*\.sh|.*\.txt|.*\.css|.*\.js|.*\.png|.*\.jpg|.*\.gif>' % secret_key)
 def server_static(filename):
     return static_file(filename, root=static_path)
