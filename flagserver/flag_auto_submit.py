@@ -50,7 +50,7 @@ class flag_auto_submit_class(object):
         self.protoco = protocol
         self.flag_submit_request_file = flag_submit_request_file
         self.sleep_time = sleep_time
-        self.con = sqlite3.connect(db_file)
+        self.con = sqlite3.connect(os.path.join(BASE_PATH, db_file))
         self.con.row_factory = self.dict_factory
 
     @classmethod
