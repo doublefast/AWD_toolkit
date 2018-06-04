@@ -8,6 +8,7 @@ import sqlite3
 import time
 import json
 import subprocess
+import os
 
 # please modyfi value of secret_key 
 secret_key='secret'
@@ -118,5 +119,6 @@ def showflagjson():
     jsondata={"flags":flags}
     return json.dumps(flags)
 
+subprocess.Popen(os.environ['_'] + ' /mybin/AWD_toolkit/flagserver/flag_auto_submit.py > flag_auto_submit_log.txt',shell=True)
 
 run(host='0.0.0.0', port=62088, threaded=True)

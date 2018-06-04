@@ -81,24 +81,26 @@ class flag_auto_submit_class(object):
 
 
     def run(self):
-        #去数据库读取 尚未提交的flag
-        flags=self.getflags()
-        for flag in flags:
-            # print(flag,flag['flag'])
+        while 1:
+            #去数据库读取 尚未提交的flag
+            flags=self.getflags()
+            for flag in flags:
+                # print(flag,flag['flag'])
 
-            # 生成wget命令，并执行
-            output=''
-            try:
-                output=subprocess.check_output(self.creat_payload(self.flag_submit_request_file,flag['flag'],flag['ip']),shell=True)
-            except:
-                continue
+                # 生成wget命令，并执行
+                output=''
+                try:
+                    output=subprocess.check_output(self.creat_payload(self.flag_submit_request_file,flag['flag'],flag['ip']),shell=True)
+                except:
+                    continue
 
-            print(flag['id'],flag['ip'],flag['flag'],output)
+                print(flag['id'],flag['ip'],flag['flag'],output)
 
-            # 如果wget命令执行成功，则将数据库里该条记录设置为已提交
-            param=[1,int(time.time()),output,flag['id']]
-            self.con.execute("UPDATE flag_submit set submitted=?,submit_time=?,comments=? where id=?",param)
-            self.con.commit()
+                # 如果wget命令执行成功，则将数据库里该条记录设置为已提交
+                param=[1,int(time.time()),output,flag['id']]
+                self.con.execute("UPDATE flag_submit set submitted=?,submit_time=?,comments=? where id=?",param)
+                self.con.commit()
+                time.sleep(self.sleep_time)
             time.sleep(self.sleep_time)
 
 def main(argv):
