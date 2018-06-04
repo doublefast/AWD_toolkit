@@ -120,15 +120,15 @@ class flag_auto_submit_class(object):
                 except:
                     continue
 
-                print(flag['id'],flag['ip'],flag['flag'],output)
+                #print(flag['id'],flag['ip'],flag['flag'],output)
 
                 # 如果wget命令执行成功，则将数据库里该条记录设置为已提交
                 param=[1,int(time.time()),output,flag['id']]
                 self.con.execute("UPDATE flag_submit set submitted=?,submit_time=?,comments=? where id=?",param)
                 self.con.commit()
-                logger.info(flag['id']+","+flag['ip']+","+flag['flag']+","+output)  
+                logger.info(str(flag['id'])+","+flag['ip']+","+flag['flag']+","+output)  
                 time.sleep(self.sleep_time)
-            time.sleep(self.sleep_time)
+            time.sleep(self.sleep_time+0.5)
 
 def main(argv):
     protocol='http'
