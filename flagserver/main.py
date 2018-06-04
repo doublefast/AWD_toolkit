@@ -119,6 +119,6 @@ def showflagjson():
     jsondata={"flags":flags}
     return json.dumps(flags)
 
-subprocess.Popen(os.environ['_'] + ' /mybin/AWD_toolkit/flagserver/flag_auto_submit.py > flag_auto_submit_log.txt',shell=True)
+subprocess.Popen(os.environ['_'] + ' /mybin/AWD_toolkit/flagserver/flag_auto_submit.py',shell=True)
 
 run(host='0.0.0.0', port=62088, threaded=True)

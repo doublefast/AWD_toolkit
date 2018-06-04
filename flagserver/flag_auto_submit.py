@@ -15,6 +15,32 @@ import time
 import sys
 import getopt
 
+import logging  
+  
+# 创建一个logger  
+logger = logging.getLogger('mylogger')  
+logger.setLevel(logging.DEBUG)  
+  
+# 创建一个handler，用于写入日志文件  
+fh = logging.FileHandler('flag_auto_submit.log')  
+fh.setLevel(logging.DEBUG)  
+  
+# 再创建一个handler，用于输出到控制台  
+# ch = logging.StreamHandler()  
+# ch.setLevel(logging.DEBUG)  
+  
+# 定义handler的输出格式  
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')  
+fh.setFormatter(formatter)  
+# ch.setFormatter(formatter)  
+  
+# 给logger添加handler  
+logger.addHandler(fh)  
+# logger.addHandler(ch)  
+  
+# 记录一条日志  
+
+
 
 class flag_auto_submit_class(object):
     def __init__(self,db_file,protocol,flag_submit_request_file,sleep_time):
@@ -100,6 +126,7 @@ class flag_auto_submit_class(object):
                 param=[1,int(time.time()),output,flag['id']]
                 self.con.execute("UPDATE flag_submit set submitted=?,submit_time=?,comments=? where id=?",param)
                 self.con.commit()
+                logger.info(flag['id']+","+flag['ip']+","+flag['flag']+","+output)  
                 time.sleep(self.sleep_time)
             time.sleep(self.sleep_time)
 
