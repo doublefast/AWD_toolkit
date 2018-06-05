@@ -130,11 +130,11 @@ class flag_auto_submit_class(object):
                 # logger.info(str(flag['id'])+","+flag['ip']+","+flag['flag']+","+output)
                 logger.info("ip: %s, flag: %s, http_respons_len: %i" % (flag['ip'],flag['flag'],len(output)))
                 time.sleep(self.sleep_time+0.5)
-            time.sleep(self.sleep_time+0.5)
+            time.sleep(1.5)
 
 def main(argv):
     protocol='http'
-    sleep_time=3
+    sleep_time=10
     db_file='db.db'
     flag_submit_request_file='flag_submit_request.txt'
     try:
